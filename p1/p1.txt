@@ -1,0 +1,35 @@
+Idea 1
+A "linkedin" type database that tracks relationships between people, between people and universities, as well as between people and companies/employers with tables below:
+People (name, email address)
+University (id, name, address)
+Department (id, name)
+Program (id, name)
+Employer (id, name)
+Positions (id, name)
+
+FriendWith (name, name) models the friend relationship between People and People itself
+AlumniOf (People.name, People.name, University.id, Department.id, Program.id) models the alumni relationship between People and People itself, along with University, Department and Program
+EmployeeOf (People.name, Employer.id, Position.id) is a relationship between People, their Employers and Positions
+ReportTo (Employer,id, People.name, Position.id, People.name, Position.id) models the relationship between People and the People that they report to
+
+
+Idea 2
+A department store database that tracks the merchandise, sales, salesperson and customers with tables below:
+Department(id, name)
+Merchandise(sku, name, MSRP, list_price)
+Vendor(id, name)
+Salesperson(id, name, base_salary)
+Customers(id, name)
+
+MerchandiseIn (Merchandise.sku, Department.id) shows relationship between a merchandise and its department
+Procurement(Merchandise.sku, Vendor.name, cost_price) shows the cost_price for a sku form a vendor
+WorksIn(Salesperson.id, Deparment.id, cut) is a relationship between Salesperson, the department(s) that they're responsible for and the cut of profit they're eligible for in each department
+Promotion(Department.name, Merchandise.name, discount_pct) is a relationship that shows promotion information for Department and Merchandise, where discount_pct is a calculated attribute based on Merchandise.MSRP and Merchandise.list_price
+Sales(Customers.name, Merchandise.sku, Merchandise.list_price, quantity) shows each customer's order details about the merchandise, quantity and price
+Revenue(Merchandise.sku, Department.id, revenue, profit) shows the revenue and profit for each sku. revenue is calculated based on Sales.quantity, and Merchandise.list_price, while profit is calcualted based on Sales.quantity,  Merchandise.list_price and Procurement.cost_price
+SalespersonPay(Salesperson.name, Salesperson.base_salary, cut_of_profit) is a relationship that shows the total salary composition for a salesperson under each deparment that he/she works for
+
+
+
+
+

@@ -1,0 +1,111 @@
+--- Yanjie Liu 10422015
+
+DROP TABLE IF EXISTS department;
+create table department(
+	dept_id int primary key, 
+	dept_name varchar(20) not null);
+
+DROP TABLE IF EXISTS salesperson;
+create table salesperson(
+	sa_id int primary key, 
+	sa_name varchar(20) not null, 
+	salary numeric(8,2) not null,
+	dept_id int not null,
+	split numeric(1,2) not null,
+	foreign key (dept_id) references department);
+
+DROP TABLE IF EXISTS vendor;
+create table vendor(
+	vendor_id int primary key, 
+	vendor_name varchar(50) not null);
+
+DROP TABLE IF EXISTS merchandise;
+create table merchandise(
+	sku varchar(50) primary key,
+	merch_name varchar(100) not null,
+	msrp_price numeric(5,2) not null,
+	inventory int not null,
+	dept_id int not null, 
+	vendor_id int not null,
+	available_quantity int not null,
+	cost_price numeric(5,2) not null,
+	foreign key (dept_id) references department,
+	foreign key (vendor_id) references vendor);
+
+DROP TABLE IF EXISTS credit_card;
+create table credit_card(
+	card_id int primary key,
+	card_number varchar(20) not null,
+	address_line1 varchar(50) not null,
+	address_line2 varchar(20),
+	town_city varchar(50),
+	state_province varchar(50) not null,
+	country_area varchar(20) not null,
+	zip_code varchar(20) not null);
+
+-- DROP TABLE IF EXISTS customer;
+-- create table customer(
+-- 	cust_id int primary key,
+-- 	cust_name varchar(20) not null,
+-- 	email_address varchar(100),
+-- 	card_id int, 
+-- 	foreign key (card_id) references credit_card);
+
+DROP TABLE IF EXISTS customer;
+create table customer(
+	cust_id int primary key,
+	cust_name varchar(20) not null,
+	email_address varchar(100));
+
+DROP TABLE IF EXISTS cc_belong;
+create table cc_belong(
+	cc_belong_id int primary key,
+	cust_id int not null,
+	card_id int not null,
+	foreign key (cust_id) references customer,
+	foreign key (card_id) references credit_card);
+
+DROP TABLE IF EXISTS orders;
+create table orders(
+	order_id int primary key,
+	order_date datetime,
+	cc_belong_id int not null,
+	sa_id int,
+	foreign key (cc_belong_id) references cc_belong,
+	foreign key (sa_id) references salesperson);
+
+DROP TABLE IF EXISTS order_merch;
+create table order_merch(
+	order_id int,
+	sku int,
+	order_quantity int not null,
+	primary key (order_id, sku),
+	foreign key (order_id) references orders,
+	foreign key (sku) references merchandise);
+
+DROP TABLE IF EXISTS in_cart;
+create table in_cart(
+	cust_id int,
+	sku varchar(50),
+	cart_quantity int not null,
+	primary key (cust_id, sku),
+	foreign key (cust_id) references customer,
+	foreign key (sku) references merchandise);
+
+DROP TABLE IF EXISTS favorite;
+create table favorite(
+	cust_id int,
+	sku varchar(50),
+	primary key (cust_id, sku),
+	foreign key (cust_id) references customer,
+	foreign key (sku) references merchandise);
+
+DROP TABLE IF EXISTS review;
+create table review(
+	cust_id int,
+	sku varchar(50),
+	star int not null,
+	primary key (cust_id, sku),
+	foreign key (cust_id) references customer,
+	foreign key (sku) references merchandise);
+

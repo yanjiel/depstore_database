@@ -1,0 +1,102 @@
+''''''''''''''''''''''''''''''OLD DESIGN''''''''''''''''''''''''''''''
+In my design submitted in week2 for department_store database, I had a `credit_card` entity, a `customer` entity, and a `orders` entity. 
+
+create table credit_card(
+	card_id int primary key,
+	card_number varchar(20) not null,
+	address_line1 varchar(50) not null,
+	address_line2 varchar(20),
+	town_city varchar(50),
+	state_province varchar(50) not null,
+	country_area varchar(20) not null,
+	zip_code varchar(20) not null);
+
+create table customer(
+	cust_id int primary key,
+	cust_name varchar(20) not null,
+	email_address varchar(100),
+	card_id int, 
+	foreign key (card_id) references credit_card);
+
+
+create table orders(
+	order_id int primary key,
+	order_date datetime,
+	cust_id int not null,
+	card_id int not null,
+	sa_id int,
+	foreign key (cust_id) references customer,
+	foreign key (card_id) references credit_card,
+	foreign key (sa_id) references salesperson);
+
+1. Between `credit_card` and `customer`, I have a 1:M relationship called `cc_belong` that models which credit card belongs to which customer
+2. Between the `orders` and `customer` entity, I had a 1:M relationship called place that models which order is placed by which customer
+3. Between the `customer` and `orders` entity, I had a 1:M relationsip called payment_method that models which order is placed using which credit_card (my department_store apparently accepts credit card only...)
+
+Because all 3 relationships are 1:M, so these 3 relationships in my OLD design were all reduced, in that: `customer` will have a FK card_id referencing the PK of `credit_card`; `orders` will have 2 FKs: one FK card_id that references to the PK of `credid_card`, and one FK 'cust_id' referencing the PK of `customer`. Or shown below:
+
+create table credit_card(
+	card_id int primary key,
+	card_number varchar(20) not null,
+	address_line1 varchar(50) not null,
+	address_line2 varchar(20),
+	town_city varchar(50),
+	state_province varchar(50) not null,
+	country_area varchar(20) not null,
+	zip_code varchar(20) not null);
+
+create table customer(
+	cust_id int primary key,
+	cust_name varchar(20) not null,
+	email_address varchar(100),
+	card_id int, 
+	foreign key (card_id) references credit_card);
+
+
+create table orders(
+	order_id int primary key,
+	order_date datetime,
+	cust_id int not null,
+	card_id int not null,
+	sa_id int,
+	foreign key (cust_id) references customer,
+	foreign key (card_id) references credit_card,
+	foreign key (sa_id) references salesperson);
+
+
+''''''''''''''''''''''''''''''NEW DESIGN''''''''''''''''''''''''''''''
+The comment I received from TAs asked me to keep the `cc_belong` entity, and it lead me to think that the old design, even though not evil, does not have a way to check that in the `orders` entity, the credit card used to place the order (card_id) actually belongs to the the customer that placed order (cust_id).
+
+So my new design keeps the `cc_belong` relation and models it as a sepearate table, while my `customer` entity will no longer need the FK `card_id`, and my `orders` entity would no longer need the FKs `card_id` & `cust_id`, but will instead have a FK `cc_belong_id` referencing the `cc_belong` table. Or shown below:
+
+create table credit_card(
+	card_id int primary key,
+	card_number varchar(20) not null,
+	address_line1 varchar(50) not null,
+	address_line2 varchar(20),
+	town_city varchar(50),
+	state_province varchar(50) not null,
+	country_area varchar(20) not null,
+	zip_code varchar(20) not null);
+
+create table customer(
+	cust_id int primary key,
+	cust_name varchar(20) not null,
+	email_address varchar(100));
+
+create table cc_belong(
+	cc_belong_id int primary key,
+	cust_id int,
+	card_id int,
+	foreign key (cust_id) references customer,
+	foreign key (card_id) references credit_card);
+
+create table orders(
+	order_id int primary key,
+	order_date datetime,
+	cc_belong_id int,
+	sa_id int,
+	foreign key (cc_belong_id) references cc_belong,
+	foreign key (sa_id) references salesperson);
+
+

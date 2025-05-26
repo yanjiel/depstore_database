@@ -1,0 +1,16 @@
+
+This is a database for a department store, which has 7 (strong) entities, salesperson, vendor, department (categories like clothing/perfume etc),  merchandise, orders (order is a keyword so cannot use as entity name), credit_card and customer. 
+
+Then we have the following 11 relationships:
+
+1.	“sa_in”: a salesperson must be associated with one department, and she/he earns a split (descriptive attribute) of their department revenue; and a department must have at least one salesperson. This relationship is 1:M with full participation from both sides
+2.	“assist”: a salesperson can assist with orders which she/he earns split on, an order can have at most one associated salesperson. This relationship is 1:M with partial participation from both sides
+3.	“merch_in”: a merchandise must be in one and only one department, and a department must have at least one merchandise. This relationship is 1:M with full participation from both sides
+4.	“procure”: a merchandise must have an vendor which supplies/manufactures it, a vendor can the supplier/manufacturer of 0 or 1 or many merchandise skus that are offered by the store. Descriptive attribute “available_quantity” shows how many quantities of a certain sku is available to be procured from a vendor, and “cost_price” is the corresponding cost. This relationship is 1:M with full participation from the “one” side
+5.	“order_merch”: an order must have 1 or many merchandise skus, an sku can appear in 0 or 1 or many orders. Descriptive attribute “order_quantity” shows the quantity ordered for a sku in an oder. This is M:M relationship with full participation from orders entity
+6.	“cc_belong”: a customer can have 0 or 1 or many credit cards, a credit card must have one and only one customer associated (no joint credit card allowed). This is 1:M relationship with full participation from credit_card entity
+7.	“place”: an order must have one and only one customer, a customer can place 0 or 1 or many orders. This is 1:M relationship with full participation from order entity
+8.	“payment_info”: an order must have one and only one credit card (no other payment methods allowed). A credit card can be used for 1 or many orders. This is 1:M relationship with full participation from order entity
+9.	“in_cart”: a customer can have a cart of 0 or 1 or many merchandise skus, a merchandise sku can be in 0, 1 or many customers' carts. Descriptive attribute “cart_quantity” shows the quantity for a sku in a cart. This is M:M relationship with partial participation from both sides
+10.	“favorite”: a customer can have a favorite list of 0 or 1 or many merchandise skus, a merchandise sku can be favorited by 0, 1 or many customers. This is M:M relationship with partial participation from both sides
+11.	“review”: a customer can leave review (a star score) for 0 or 1 or many merchandise skus, a merchandise sku can have reviews from 0 or 1 or many customers at the same time. Descriptive attribute “star” shows the star score for a sku reviewed by a customer. This is M:M relationship with partial participation from both sides

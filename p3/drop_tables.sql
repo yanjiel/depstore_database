@@ -1,0 +1,25 @@
+--- Yanjie Liu 10422015
+
+DROP TABLE IF EXISTS department;
+
+DROP TABLE IF EXISTS salesperson;
+
+DROP TABLE IF EXISTS vendor;
+
+DROP TABLE IF EXISTS merchandise;
+
+DROP TABLE IF EXISTS credit_card;
+
+DROP TABLE IF EXISTS customer;
+
+DROP TABLE IF EXISTS cc_belong;
+
+DROP TABLE IF EXISTS orders;
+
+DROP TABLE IF EXISTS order_merch;
+
+DROP TABLE IF EXISTS in_cart;
+
+DROP TABLE IF EXISTS favorite;
+
+DROP TABLE IF EXISTS review;
